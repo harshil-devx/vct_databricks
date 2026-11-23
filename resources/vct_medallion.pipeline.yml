@@ -6,9 +6,12 @@ resources:
       schema: ${var.env_prefix}vct_bronze
       serverless: true
       continuous: false
+      root_path: ../src
       configuration:
         vct.landing_root: /Volumes/${var.catalog}/${var.landing_schema}/raw/vct
         vct.bronze_schema: ${var.catalog}.${var.env_prefix}vct_bronze
+        vct.silver_schema: ${var.catalog}.${var.env_prefix}vct_silver
+        vct.gold_schema: ${var.catalog}.${var.env_prefix}vct_gold
       libraries:
         - file:
-            path: ../src/pipelines/bronze/bronze_overview.py
+            path: ../src/pipelines/bronze/bronze.py
