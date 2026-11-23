@@ -1,0 +1,43 @@
+resources:
+  jobs:
+    vct_medallion_job:
+      name: vct-medallion-etl
+      max_concurrent_runs: 1
+      schedule:
+        # Monthly refresh on the 1st at 06:00 UTC (matches Kaggle dataset cadence).
+        # Paused by default via var.schedule_pause_status; owner enables prod when ready.
+        quartz_cron_expression: "0 0 6 1 * ?"
+        timezone_id: UTC
+        pause_status: ${var.schedule_pause_status}
+      environments:
+        - environment_key: default
+          spec:
+            client: "2"
+      tasks:
+        - task_key: validate_landing
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/jobs/validate_landing.py
+            parameters:
+              - "--landing-root"
+              - "/Volumes/${var.catalog}/${var.landing_schema}/raw/vct"
+
+        - task_key: run_pipeline
+          depends_on:
+            - task_key: validate_landing
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.vct_medallion.id}
+
+        - task_key: data_quality_checks
+          depends_on:
+            - task_key: run_pipeline
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/jobs/data_quality_checks.py
+            parameters:
+              - "--bronze-schema"
+              - "${var.catalog}.${var.env_prefix}vct_bronze"
+              - "--silver-schema"
+              - "${var.catalog}.${var.env_prefix}vct_silver"
+              - "--gold-schema"
+              - "${var.catalog}.${var.env_prefix}vct_gold"

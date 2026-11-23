@@ -17,6 +17,9 @@ variables:
   env_prefix:
     description: Prefix for the bronze/silver/gold schemas ("dev_" in dev, empty in prod)
     default: ""
+  schedule_pause_status:
+    description: Pause status for job schedule (PAUSED by default until prod owner enables it)
+    default: PAUSED
 
 targets:
   dev:
