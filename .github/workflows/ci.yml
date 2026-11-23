@@ -1,0 +1,43 @@
+name: CI — Lint, Test, and Bundle Validate
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-test-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install lint and unit-test dependencies
+        run: python -m pip install --upgrade pip ruff pytest
+
+      - name: Lint with ruff
+        run: ruff check src tests scripts
+
+      - name: Run pure-Python unit tests
+        run: pytest -v
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      # Free Edition has no Account Console for OAuth M2M / OIDC service principals,
+      # so CI authenticates with a short-lived PAT stored in GitHub Secrets.
+      # On Enterprise workspaces, switch to DATABRICKS_CLIENT_ID + OIDC federation.
+      - name: Validate Databricks Asset Bundle (dev)
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: databricks bundle validate -t dev
