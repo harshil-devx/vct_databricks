@@ -9,9 +9,18 @@ resources:
       root_path: ../src
       configuration:
         vct.landing_root: /Volumes/${var.catalog}/${var.landing_schema}/raw/vct
+        vct.seeds_dir: ${workspace.file_path}/seeds
         vct.bronze_schema: ${var.catalog}.${var.env_prefix}vct_bronze
         vct.silver_schema: ${var.catalog}.${var.env_prefix}vct_silver
         vct.gold_schema: ${var.catalog}.${var.env_prefix}vct_gold
       libraries:
         - file:
             path: ../src/pipelines/bronze/bronze.py
+        - file:
+            path: ../src/pipelines/silver/silver_seeds.py
+        - file:
+            path: ../src/pipelines/silver/silver_dimensions.py
+        - file:
+            path: ../src/pipelines/silver/silver_facts_matches.py
+        - file:
+            path: ../src/pipelines/silver/silver_facts_aggregates.py

@@ -1,0 +1,7 @@
+pattern_order,regex_pattern,tournament_tier,description
+1,(?i)valorant\s+champions\b|champions\s+\d{4},International_Champions,Annual world championship (Valorant Champions)
+2,(?i)\bmasters\b|lock//in,International_Masters,Global LAN Masters events and LOCK//IN
+3,(?i)last\s+chance\s+qualifier|\blcq\b,Regional_LCQ,Regional Last Chance Qualifiers
+4,(?i)\bchallengers\b|\bqualifier|\bopen\b|\bcontenders\b|\bascension\b|\bgame\s+changers\b,Challengers_Qualifier,"Tier-2 Challengers, qualifiers, opens, and Ascension events (bulk of 2021-2022)"
+5,(?i)(vct|champions\s+tour)\s+\d{4}:\s*(americas|emea|pacific|china),Regional_League,Franchised International Leagues (2023+ Kickoff/Stage 1/Stage 2)
+6,.*,Other,Fallback tier for uncategorized tournaments
