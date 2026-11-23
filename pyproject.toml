@@ -42,4 +42,4 @@ target-version = "py312"
 select = ["E", "F", "I", "W", "B", "UP"]
 
 [tool.ruff.lint.per-file-ignores]
-"src/pipelines/**/*.py" = ["F821"]
+"src/pipelines/**/*.py" = ["F821", "E501"]

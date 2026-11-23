@@ -24,3 +24,9 @@ resources:
             path: ../src/pipelines/silver/silver_facts_matches.py
         - file:
             path: ../src/pipelines/silver/silver_facts_aggregates.py
+        - file:
+            path: ../src/pipelines/gold/gold_dimensions.py
+        - file:
+            path: ../src/pipelines/gold/gold_facts.py
+        - file:
+            path: ../src/pipelines/gold/gold_marts.py
